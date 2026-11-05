@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รักเจล 🩷</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { min-height:100vh; overflow:hidden; background:#000; font-family:sans-serif; cursor:crosshair; }
+  .bg { position:fixed; inset:0; background:linear-gradient(135deg,#ff6ec4,#7873f5,#4ADEDE,#ff6ec4); background-size:400% 400%; animation:g 8s ease infinite; }
+  @keyframes g { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+  .text { position:fixed; font-weight:900; white-space:nowrap; pointer-events:none; user-select:none; z-index:2; text-shadow:0 0 10px currentColor,0 0 20px currentColor; animation:pop .4s cubic-bezier(.17,.89,.32,1.49),up linear forwards; }
+  @keyframes pop { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
+  @keyframes up { 0%{opacity:1} 100%{opacity:0;transform:translateY(-150px) rotate(15deg) scale(1.2)} }
+  .counter { position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:10; background:rgba(0,0,0,.55); color:#fff; padding:10px 22px; border-radius:999px; font-size:15px; font-weight:700; backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.3); white-space:nowrap; }
+  .counter span { color:#ff8ad4; }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="counter">รักเจล ไปแล้ว <span id="count">0</span> ครั้ง 🩷</div>
+<script>
+  const W=['รักเจล','รักเจล','รักเจล','RUK JEL','รักเจล 💖'];
+  const C=['#fff','#ff8ad4','#ffd93d','#6bf0ff','#ff6b6b','#c084fc'];
+  const S=[20,26,32,40,52,64,80];
+  const countEl=document.getElementById('count');
+  let count=0;
+  const rnd=(a,b)=>Math.random()*(b-a)+a;
+  
+  function spawn(){
+    const el=document.createElement('div');
+    el.className='text';
+    el.textContent=W[Math.floor(Math.random()*W.length)];
+    const size=S[Math.floor(Math.random()*S.length)];
+    el.style.left=rnd(0,innerWidth-size*3)+'px';
+    el.style.top=rnd(0,innerHeight-size)+'px';
+    el.style.fontSize=size+'px';
+    el.style.color=C[Math.floor(Math.random()*C.length)];
+    const d=rnd(1.8,3.5);
+    el.style.animationDuration=`0.4s,${d}s`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),d*1000+500);
+    countEl.textContent=(++count).toLocaleString();
+  }
+  
+  setInterval(spawn,90);
+  
+  document.addEventListener('click',e=>{
+    for(let i=0;i<15;i++){
+      const el=document.createElement('div');
+      el.className='text';
+      el.textContent='รักเจล';
+      el.style.left=e.clientX+'px';
+      el.style.top=e.clientY+'px';
+      el.style.fontSize=rnd(18,48)+'px';
+      el.style.color=C[Math.floor(Math.random()*C.length)];
+      const a=Math.PI*2*i/15, dist=rnd(80,250);
+      el.animate([
+        {transform:'translate(0,0) scale(0)',opacity:0},
+        {transform:`translate(${Math.cos(a)*dist}px,${Math.sin(a)*dist}px) scale(1)`,opacity:1}
+      ],{duration:500,easing:'ease-out'});
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),600);
+      count++;
+    }
+    countEl.textContent=count.toLocaleString();
+  });
+</script>
+</body>
+</html>
